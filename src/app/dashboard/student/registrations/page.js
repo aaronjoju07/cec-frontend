@@ -38,37 +38,37 @@ export default function RegistrationsPage() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-6">My Registrations</h1>
+    <div className="p-6 bg-gray-100">
+      <h1 className="text-2xl font-semibold mb-6 text-gray-900">My Registrations</h1>
       {loading ? (
-        <div className="text-center">Loading...</div>
+        <div className="text-center text-gray-800">Loading...</div>
       ) : (
         <>
-          <h2 className="text-xl font-medium mb-4">Upcoming Events</h2>
+          <h2 className="text-xl font-medium mb-4 text-gray-800">Upcoming Events</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {registrations.upcomingEvents.map((reg) => (
-              <div key={reg._id} className="bg-white p-4 rounded-md shadow-md">
-                <h3 className="text-lg font-medium">{reg.event.name}</h3>
-                <p className="text-gray-600">{reg.event.description}</p>
-                <p className="text-sm mt-2">
+              <div key={reg._id} className="bg-white p-4 rounded-md shadow-md border border-gray-200">
+                <h3 className="text-lg font-medium text-gray-900">{reg.event.name}</h3>
+                <p className="text-gray-700">{reg.event.description}</p>
+                <p className="text-sm mt-2 text-gray-800">
                   <strong>Start:</strong> {new Date(reg.event.conductedDates.start).toLocaleString()}
                 </p>
                 <button
                   onClick={() => handleCancel(reg._id)}
-                  className="text-red-600 hover:underline mt-2"
+                  className="text-red-700 hover:underline mt-2"
                 >
                   Cancel Registration
                 </button>
               </div>
             ))}
           </div>
-          <h2 className="text-xl font-medium mb-4">Past Events</h2>
+          <h2 className="text-xl font-medium mb-4 text-gray-800">Past Events</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {registrations.pastEvents.map((reg) => (
-              <div key={reg._id} className="bg-white p-4 rounded-md shadow-md">
-                <h3 className="text-lg font-medium">{reg.event.name}</h3>
-                <p className="text-gray-600">{reg.event.description}</p>
-                <p className="text-sm mt-2">
+              <div key={reg._id} className="bg-white p-4 rounded-md shadow-md border border-gray-200">
+                <h3 className="text-lg font-medium text-gray-900">{reg.event.name}</h3>
+                <p className="text-gray-700">{reg.event.description}</p>
+                <p className="text-sm mt-2 text-gray-800">
                   <strong>End:</strong> {new Date(reg.event.conductedDates.end).toLocaleString()}
                 </p>
               </div>

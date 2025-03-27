@@ -26,22 +26,22 @@ export default function EventsPage() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-6">All Events</h1>
+    <div className="p-6 bg-gray-100">
+      <h1 className="text-2xl font-semibold mb-6 text-gray-900">All Events</h1>
       {loading ? (
-        <div className="text-center">Loading...</div>
+        <div className="text-center text-gray-800">Loading...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {events.map((event) => (
-            <div key={event._id} className="bg-white p-4 rounded-md shadow-md">
-              <h2 className="text-lg font-medium">{event.name}</h2>
-              <p className="text-gray-600">{event.description}</p>
-              <p className="text-sm mt-2">
+            <div key={event._id} className="bg-gray-50 p-4 rounded-md shadow-md hover:bg-gray-100 transition-colors">
+              <h2 className="text-lg font-medium text-gray-900">{event.name}</h2>
+              <p className="text-gray-700">{event.description}</p>
+              <p className="text-sm mt-2 text-gray-800">
                 <strong>Start:</strong> {new Date(event.conductedDates.start).toLocaleString()}
               </p>
               <Link
                 href={`/dashboard/events/${event._id}`}
-                className="text-indigo-600 hover:underline mt-2 block"
+                className="text-gray-700 hover:text-gray-900 hover:underline mt-2 block"
               >
                 View Details
               </Link>

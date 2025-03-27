@@ -50,20 +50,20 @@ export default function EventDetailPage() {
   const isRegistered = event.registeredStudents.some((student) => student._id === user?._id);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-6">{event.name}</h1>
+    <div className="p-6 bg-gray-100">
+      <h1 className="text-2xl font-semibold mb-6 text-gray-800">{event.name}</h1>
       <div className="bg-white p-6 rounded-md shadow-md">
-        <p className="text-gray-600">{event.description}</p>
-        <p className="mt-2">
+        <p className="text-gray-700">{event.description}</p>
+        <p className="mt-2 text-gray-800">
           <strong>Start:</strong> {new Date(event.conductedDates.start).toLocaleString()}
         </p>
-        <p>
+        <p className="text-gray-800">
           <strong>End:</strong> {new Date(event.conductedDates.end).toLocaleString()}
         </p>
-        <p>
+        <p className="text-gray-800">
           <strong>Max Students:</strong> {event.maximumStudents}
         </p>
-        <p>
+        <p className="text-gray-800">
           <strong>Current Registrations:</strong> {event.registeredStudents.length}
         </p>
         {isStudent && (
@@ -73,7 +73,7 @@ export default function EventDetailPage() {
             className={`mt-4 px-4 py-2 rounded-md text-white ${
               isRegistered || event.registeredStudents.length >= event.maximumStudents
                 ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-indigo-600 hover:bg-indigo-700'
+                : 'bg-gray-600 hover:bg-gray-700'
             }`}
           >
             {isRegistered ? 'Already Registered' : 'Register Now'}

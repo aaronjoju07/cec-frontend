@@ -26,34 +26,34 @@ export default function OrganizerEventsPage() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-gray-100">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">My Events</h1>
+        <h1 className="text-2xl font-semibold text-gray-800">My Events</h1>
         <Link
           href="/dashboard/organizer/events/new"
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+          className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800"
         >
           Create New Event
         </Link>
       </div>
       {loading ? (
-        <div className="text-center">Loading...</div>
+        <div className="text-center text-gray-700">Loading...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {events.map((event) => (
-            <div key={event._id} className="bg-white p-4 rounded-md shadow-md">
-              <h2 className="text-lg font-medium">{event.name}</h2>
-              <p className="text-gray-600">{event.description}</p>
+            <div key={event._id} className="bg-white p-4 rounded-md shadow-md hover:shadow-lg transition-shadow">
+              <h2 className="text-lg font-medium text-gray-800">{event.name}</h2>
+              <p className="text-gray-700">{event.description}</p>
               <div className="mt-4 flex space-x-2">
                 <Link
                   href={`/dashboard/organizer/events/${event._id}`}
-                  className="text-indigo-600 hover:underline"
+                  className="text-gray-700 hover:text-gray-900 hover:underline"
                 >
                   View
                 </Link>
                 <Link
                   href={`/dashboard/organizer/events/${event._id}/edit`}
-                  className="text-indigo-600 hover:underline"
+                  className="text-gray-700 hover:text-gray-900 hover:underline"
                 >
                   Edit
                 </Link>
