@@ -3,7 +3,6 @@ import { useState } from 'react';
 import axios from 'axios';
 
 export default function EventForm() {
-
   const [eventData, setEventData] = useState({
     name: '',
     description: '',
@@ -18,6 +17,7 @@ export default function EventForm() {
     subEvents: [],
   });
   const [pdfFile, setPdfFile] = useState(null);
+  const [uploading, setUploading] = useState(false); // New state for upload status
 
   // Handler for top-level input changes
   const handleInputChange = (e) => {
@@ -123,6 +123,71 @@ export default function EventForm() {
     });
   };
 
+  // New function to handle PDF upload and extraction
+  const handlePdfUpload = async () => {
+    if (!pdfFile) {
+      alert('Please select a PDF file to upload.');
+      return;
+    }
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('pdf', pdfFile);
+
+    try {
+      const response = await axios.post('http://localhost:5001/extract-event-details', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const extractedData = response.data;
+
+      // Helper function to format dates for datetime-local input
+      const formatDateForInput = (dateStr) => {
+        if (!dateStr) return '';
+        const date = new Date(dateStr);
+        return date.toISOString().slice(0, 16); // e.g., "2025-04-15T09:00"
+      };
+
+      // Update eventData with extracted data, preserving existing data if not provided
+      setEventData((prev) => ({
+        ...prev,
+        name: extractedData.name || prev.name,
+        description: extractedData.description || prev.description,
+        conductedDates: {
+          start: extractedData.conductedDates?.start
+            ? formatDateForInput(extractedData.conductedDates.start)
+            : prev.conductedDates.start,
+          end: extractedData.conductedDates?.end
+            ? formatDateForInput(extractedData.conductedDates.end)
+            : prev.conductedDates.end,
+        },
+        targetedAudience: {
+          departments: extractedData.targetedAudience?.departments || prev.targetedAudience.departments,
+          courses: extractedData.targetedAudience?.courses || prev.targetedAudience.courses,
+        },
+        organizingInstitution: extractedData.organizingInstitution || prev.organizingInstitution,
+        organizingCollege: extractedData.organizingCollege || prev.organizingCollege,
+        maximumStudents: extractedData.maximumStudents || prev.maximumStudents,
+        maxEventsPerStudent: extractedData.maxEventsPerStudent || prev.maxEventsPerStudent,
+        generalRules: extractedData.generalRules || prev.generalRules,
+        contactInfo: {
+          email: extractedData.contactInfo?.email || prev.contactInfo.email,
+          phone: extractedData.contactInfo?.phone || prev.contactInfo.phone,
+        },
+        subEvents: extractedData.subEvents || prev.subEvents,
+      }));
+
+      alert('PDF details extracted and populated successfully!');
+    } catch (error) {
+      console.error('PDF extraction error:', error);
+      alert('Failed to extract details from PDF. Please try again.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   // Submission handler
   const handleSubmit = async () => {
     // Validate required fields
@@ -202,6 +267,28 @@ export default function EventForm() {
 
   return (
     <div className="space-y-8">
+      {/* PDF Upload */}
+      <section>
+        <h3 className="text-xl font-semibold mb-4 text-black">Event PDF (Optional)</h3>
+        <div className="flex items-center gap-4">
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={(e) => setPdfFile(e.target.files[0])}
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
+          />
+          <button
+            type="button"
+            onClick={handlePdfUpload}
+            disabled={uploading || !pdfFile}
+            className={`py-2 px-4 rounded-md text-white ${
+              uploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-600 hover:bg-gray-700'
+            }`}
+          >
+            {uploading ? 'Extracting...' : 'Extract Details'}
+          </button>
+        </div>
+      </section>
       {/* Event Details */}
       <section>
         <h3 className="text-xl font-semibold mb-4 text-black">Event Details</h3>
@@ -554,16 +641,7 @@ export default function EventForm() {
         </button>
       </section>
 
-      {/* PDF Upload */}
-      <section>
-        <h3 className="text-xl font-semibold mb-4 text-black">Event PDF</h3>
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={(e) => setPdfFile(e.target.files[0])}
-          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
-        />
-      </section>
+      
 
       {/* Submit Button */}
       <div>
