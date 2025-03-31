@@ -1,3 +1,4 @@
+// app/dashboard/student/layout.js
 'use client';
 
 import { useAuth } from '@/contexts/AuthContext';
@@ -5,14 +6,15 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import Navbar from '@/components/layout/Navbar';
+import Chatbot from '@/components/Chatbot';
 
-export default function DashboardLayout({ children }) {
+export default function StudentLayout({ children }) {
   const auth = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!auth || auth.loading) return;
-    if (!auth.isAuthenticated) {
+    if (!auth.isAuthenticated || auth.user?.role !== 'student') {
       router.push('/login');
     }
   }, [auth, router]);
@@ -25,9 +27,7 @@ export default function DashboardLayout({ children }) {
     );
   }
 
-  if (!auth.isAuthenticated) {
-    return null;
-  }
+
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -38,6 +38,7 @@ export default function DashboardLayout({ children }) {
           {children}
         </main>
       </div>
+      <Chatbot />
     </div>
   );
 }
