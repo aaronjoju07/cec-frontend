@@ -10,7 +10,8 @@ import {
   UserIcon, 
   ChartBarIcon, 
   ClockIcon, 
-  InboxIcon
+  InboxIcon,
+  TrophyIcon
 } from '@heroicons/react/24/outline';
 
 export default function Sidebar() {
@@ -19,14 +20,15 @@ export default function Sidebar() {
 
   // Define navigation items based on user role
   const navigation = user?.role === 'organizer' 
-    ? [
-        { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-        { name: 'My Events', href: '/dashboard/organizer/events', icon: CalendarIcon },
-        { name: 'Create Event', href: '/dashboard/organizer/events/new', icon: InboxIcon },
-        { name: 'Analytics', href: '/dashboard/organizer/analytics', icon: ChartBarIcon },
-        { name: 'Scheduling', href: '/dashboard/organizer/scheduling', icon: ClockIcon },
-        { name: 'Profile', href: '/dashboard/profile', icon: UserIcon },
-      ]
+  ? [
+      { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
+      { name: 'My Events', href: '/dashboard/organizer/events', icon: CalendarIcon },
+      { name: 'Create Event', href: '/dashboard/organizer/events/new', icon: InboxIcon },
+      { name: 'Analytics', href: '/dashboard/organizer/analytics', icon: ChartBarIcon },
+      { name: 'Scheduling', href: '/dashboard/organizer/scheduling', icon: ClockIcon },
+      { name: 'Score Management', href: '/dashboard/organizer/subevents', icon: TrophyIcon }, // New entry
+      { name: 'Profile', href: '/dashboard/profile', icon: UserIcon },
+    ]
     : [
         { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
         { name: 'Discover Events', href: '/dashboard/student/events', icon: CalendarIcon },

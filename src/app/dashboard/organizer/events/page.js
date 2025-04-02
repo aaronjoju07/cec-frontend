@@ -88,6 +88,12 @@ export default function OrganizerEventsPage() {
                 >
                   Edit
                 </Link>
+                <Link
+                  href={`/dashboard/organizer/subevents?eventId=${event._id}`} // Dynamic link
+                  className="text-gray-700 hover:text-gray-900 hover:underline"
+                >
+                  Manage Sub-Events
+                </Link>
                 <button
                   onClick={() => handleDelete(event._id)}
                   className="text-red-600 hover:text-red-800 hover:underline"
