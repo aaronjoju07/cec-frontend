@@ -140,6 +140,11 @@ export default function EventForm() {
           'Content-Type': 'multipart/form-data',
         },
       });
+      await axios.post('http://localhost:5002/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       const extractedData = response.data;
 
@@ -281,9 +286,8 @@ export default function EventForm() {
             type="button"
             onClick={handlePdfUpload}
             disabled={uploading || !pdfFile}
-            className={`py-2 px-4 rounded-md text-white ${
-              uploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-600 hover:bg-gray-700'
-            }`}
+            className={`py-2 px-4 rounded-md text-white ${uploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-600 hover:bg-gray-700'
+              }`}
           >
             {uploading ? 'Extracting...' : 'Extract Details'}
           </button>
@@ -641,7 +645,7 @@ export default function EventForm() {
         </button>
       </section>
 
-      
+
 
       {/* Submit Button */}
       <div>
