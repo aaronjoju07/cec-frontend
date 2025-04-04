@@ -271,31 +271,33 @@ export default function EventForm() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10 p-6 bg-gray-50 rounded-lg shadow-lg max-w-4xl mx-auto">
       {/* PDF Upload */}
-      <section>
-        <h3 className="text-xl font-semibold mb-4 text-black">Event PDF (Optional)</h3>
+      <section className="bg-white p-6 rounded-lg shadow-md">
+        <h3 className="text-2xl font-bold mb-4 text-gray-800">Event PDF (Optional)</h3>
         <div className="flex items-center gap-4">
           <input
             type="file"
             accept="application/pdf"
             onChange={(e) => setPdfFile(e.target.files[0])}
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
+            className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-colors"
           />
           <button
             type="button"
             onClick={handlePdfUpload}
             disabled={uploading || !pdfFile}
-            className={`py-2 px-4 rounded-md text-white ${uploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-600 hover:bg-gray-700'
-              }`}
+            className={`py-2 px-6 rounded-lg font-medium text-white transition-colors ${
+              uploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'
+            }`}
           >
             {uploading ? 'Extracting...' : 'Extract Details'}
           </button>
         </div>
       </section>
+  
       {/* Event Details */}
-      <section>
-        <h3 className="text-xl font-semibold mb-4 text-black">Event Details</h3>
+      <section className="bg-white p-6 rounded-lg shadow-md">
+        <h3 className="text-2xl font-bold mb-4 text-gray-800">Event Details</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">Name</label>
@@ -304,7 +306,7 @@ export default function EventForm() {
               name="name"
               value={eventData.name}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
               placeholder="e.g., Tech Fest 2025"
               required
             />
@@ -315,11 +317,11 @@ export default function EventForm() {
               name="description"
               value={eventData.description}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
               rows="3"
               placeholder="e.g., Annual technology festival..."
               required
-            ></textarea>
+            />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Start Date</label>
@@ -327,7 +329,7 @@ export default function EventForm() {
               type="datetime-local"
               value={eventData.conductedDates.start}
               onChange={(e) => handleNestedChange('conductedDates.start', e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
               required
             />
           </div>
@@ -337,31 +339,30 @@ export default function EventForm() {
               type="datetime-local"
               value={eventData.conductedDates.end}
               onChange={(e) => handleNestedChange('conductedDates.end', e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
               required
             />
           </div>
         </div>
       </section>
-
+  
       {/* Targeted Audience */}
-      <section>
-        <h3 className="text-xl font-semibold mb-4 text-black">Targeted Audience</h3>
+      <section className="bg-white p-6 rounded-lg shadow-md">
+        <h3 className="text-2xl font-bold mb-4 text-gray-800">Targeted Audience</h3>
         <div className="space-y-6">
-          {/* Departments */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Departments</label>
-            <div className="mt-1 flex flex-wrap gap-2">
+            <div className="mt-2 flex flex-wrap gap-2">
               {eventData.targetedAudience.departments.map((dept, index) => (
                 <span
                   key={index}
-                  className="inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-gray-200 text-gray-800"
+                  className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"
                 >
                   {dept}
                   <button
                     type="button"
                     onClick={() => removeItem('targetedAudience.departments', index)}
-                    className="ml-2 text-gray-500 hover:text-gray-700"
+                    className="ml-2 text-indigo-600 hover:text-indigo-800"
                   >
                     ×
                   </button>
@@ -377,24 +378,23 @@ export default function EventForm() {
                   e.preventDefault();
                 }
               }}
-              className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+              className="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
               placeholder="Type and press Enter (e.g., Computer Science)"
             />
           </div>
-          {/* Courses */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Courses</label>
-            <div className="mt-1 flex flex-wrap gap-2">
+            <div className="mt-2 flex flex-wrap gap-2">
               {eventData.targetedAudience.courses.map((course, index) => (
                 <span
                   key={index}
-                  className="inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-gray-200 text-gray-800"
+                  className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"
                 >
                   {course}
                   <button
                     type="button"
                     onClick={() => removeItem('targetedAudience.courses', index)}
-                    className="ml-2 text-gray-500 hover:text-gray-700"
+                    className="ml-2 text-indigo-600 hover:text-indigo-800"
                   >
                     ×
                   </button>
@@ -410,16 +410,16 @@ export default function EventForm() {
                   e.preventDefault();
                 }
               }}
-              className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+              className="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
               placeholder="Type and press Enter (e.g., B.Tech)"
             />
           </div>
         </div>
       </section>
-
+  
       {/* Organizing Details */}
-      <section>
-        <h3 className="text-xl font-semibold mb-4 text-black">Organizing Details</h3>
+      <section className="bg-white p-6 rounded-lg shadow-md">
+        <h3 className="text-2xl font-bold mb-4 text-gray-800">Organizing Details</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">Organizing Institution</label>
@@ -428,7 +428,7 @@ export default function EventForm() {
               name="organizingInstitution"
               value={eventData.organizingInstitution}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
               placeholder="e.g., XYZ University"
             />
           </div>
@@ -439,16 +439,16 @@ export default function EventForm() {
               name="organizingCollege"
               value={eventData.organizingCollege}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
               placeholder="e.g., ABC College of Engineering"
             />
           </div>
         </div>
       </section>
-
+  
       {/* Student Limits */}
-      <section>
-        <h3 className="text-xl font-semibold mb-4 text-black">Student Limits</h3>
+      <section className="bg-white p-6 rounded-lg shadow-md">
+        <h3 className="text-2xl font-bold mb-4 text-gray-800">Student Limits</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">Maximum Students</label>
@@ -457,7 +457,7 @@ export default function EventForm() {
               name="maximumStudents"
               value={eventData.maximumStudents}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
               min="1"
               placeholder="e.g., 200"
             />
@@ -469,32 +469,31 @@ export default function EventForm() {
               name="maxEventsPerStudent"
               value={eventData.maxEventsPerStudent}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
               min="1"
               placeholder="e.g., 3"
             />
           </div>
         </div>
       </section>
-
+  
       {/* Rules and Contact */}
-      <section>
-        <h3 className="text-xl font-semibold mb-4 text-black">Rules and Contact</h3>
+      <section className="bg-white p-6 rounded-lg shadow-md">
+        <h3 className="text-2xl font-bold mb-4 text-gray-800">Rules and Contact</h3>
         <div className="space-y-6">
-          {/* General Rules */}
           <div>
             <label className="block text-sm font-medium text-gray-700">General Rules</label>
-            <div className="mt-1 flex flex-wrap gap-2">
+            <div className="mt-2 flex flex-wrap gap-2">
               {eventData.generalRules.map((rule, index) => (
                 <span
                   key={index}
-                  className="inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-gray-200 text-gray-800"
+                  className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"
                 >
                   {rule}
                   <button
                     type="button"
                     onClick={() => removeItem('generalRules', index)}
-                    className="ml-2 text-gray-500 hover:text-gray-700"
+                    className="ml-2 text-indigo-600 hover:text-indigo-800"
                   >
                     ×
                   </button>
@@ -510,11 +509,10 @@ export default function EventForm() {
                   e.preventDefault();
                 }
               }}
-              className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+              className="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
               placeholder="Type and press Enter (e.g., No outside food)"
             />
           </div>
-          {/* Contact Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700">Email</label>
@@ -522,7 +520,7 @@ export default function EventForm() {
                 type="email"
                 value={eventData.contactInfo.email}
                 onChange={(e) => handleNestedChange('contactInfo.email', e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
                 placeholder="e.g., events@xyz.edu"
               />
             </div>
@@ -532,20 +530,20 @@ export default function EventForm() {
                 type="tel"
                 value={eventData.contactInfo.phone}
                 onChange={(e) => handleNestedChange('contactInfo.phone', e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
                 placeholder="e.g., +1234567890"
               />
             </div>
           </div>
         </div>
       </section>
-
+  
       {/* Sub Events */}
-      <section>
-        <h3 className="text-xl font-semibold mb-4 text-black">Sub Events</h3>
+      <section className="bg-white p-6 rounded-lg shadow-md">
+        <h3 className="text-2xl font-bold mb-4 text-gray-800">Sub Events</h3>
         {eventData.subEvents.map((subEvent, subIndex) => (
-          <div key={subIndex} className="mb-6 p-6 border border-gray-200 rounded-md">
-            <h4 className="text-lg font-medium text-black mb-4">Sub-Event {subIndex + 1}</h4>
+          <div key={subIndex} className="mb-6 p-6 bg-gray-50 rounded-lg border border-gray-200">
+            <h4 className="text-lg font-semibold text-gray-800 mb-4">Sub-Event {subIndex + 1}</h4>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Name</label>
@@ -553,7 +551,7 @@ export default function EventForm() {
                   type="text"
                   value={subEvent.name}
                   onChange={(e) => handleSubEventChange(subIndex, 'name', e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
                   placeholder="e.g., Hackathon"
                 />
               </div>
@@ -562,10 +560,10 @@ export default function EventForm() {
                 <textarea
                   value={subEvent.overview}
                   onChange={(e) => handleSubEventChange(subIndex, 'overview', e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
                   rows="2"
                   placeholder="e.g., 24-hour coding challenge"
-                ></textarea>
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Venue</label>
@@ -573,13 +571,12 @@ export default function EventForm() {
                   type="text"
                   value={subEvent.venue}
                   onChange={(e) => handleSubEventChange(subIndex, 'venue', e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
                   placeholder="e.g., Main Hall"
                 />
               </div>
-              {/* Prize Pools */}
               <div>
-                <h5 className="text-md font-medium text-black mb-2">Prize Pools</h5>
+                <h5 className="text-md font-semibold text-gray-800 mb-2">Prize Pools</h5>
                 {subEvent.prizePools.map((prize, prizeIndex) => (
                   <div key={prizeIndex} className="flex items-end gap-4 mb-2">
                     <div className="flex-1">
@@ -590,7 +587,7 @@ export default function EventForm() {
                         onChange={(e) =>
                           handlePrizePoolChange(subIndex, prizeIndex, 'rank', e.target.value)
                         }
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
                         min="1"
                         placeholder="e.g., 1"
                       />
@@ -603,7 +600,7 @@ export default function EventForm() {
                         onChange={(e) =>
                           handlePrizePoolChange(subIndex, prizeIndex, 'amount', e.target.value)
                         }
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 py-2 px-3"
                         min="0"
                         step="0.01"
                         placeholder="e.g., 1000"
@@ -612,7 +609,7 @@ export default function EventForm() {
                     <button
                       type="button"
                       onClick={() => removePrizePool(subIndex, prizeIndex)}
-                      className="text-red-600 hover:text-red-800"
+                      className="text-red-600 hover:text-red-800 font-medium"
                     >
                       Remove
                     </button>
@@ -621,7 +618,7 @@ export default function EventForm() {
                 <button
                   type="button"
                   onClick={() => addPrizePool(subIndex)}
-                  className="mt-2 inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300"
+                  className="mt-2 inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium text-indigo-700 bg-indigo-100 hover:bg-indigo-200 transition-colors"
                 >
                   Add Prize Pool
                 </button>
@@ -630,7 +627,7 @@ export default function EventForm() {
             <button
               type="button"
               onClick={() => removeSubEvent(subIndex)}
-              className="mt-4 text-red-600 hover:text-red-800"
+              className="mt-4 text-red-600 hover:text-red-800 font-medium"
             >
               Remove Sub-Event
             </button>
@@ -639,20 +636,18 @@ export default function EventForm() {
         <button
           type="button"
           onClick={addSubEvent}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
         >
           Add Sub-Event
         </button>
       </section>
-
-
-
+  
       {/* Submit Button */}
       <div>
         <button
           type="button"
           onClick={handleSubmit}
-          className="w-full inline-flex justify-center py-3 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          className="w-full inline-flex justify-center py-3 px-4 rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
         >
           Create Event
         </button>

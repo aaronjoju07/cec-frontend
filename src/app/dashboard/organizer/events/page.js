@@ -37,8 +37,6 @@ export default function OrganizerEventsPage() {
           'Content-Type': 'application/json',
         },
       });
-
-      // Update the events list by filtering out the deleted event
       setEvents((prevEvents) => prevEvents.filter((event) => event._id !== eventId));
       alert('Event deleted successfully!');
     } catch (error) {
@@ -53,58 +51,103 @@ export default function OrganizerEventsPage() {
     }
   };
 
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+  };
+
   return (
-    <div className="p-6 bg-gray-100">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">My Events</h1>
-        <Link
-          href="/dashboard/organizer/events/new"
-          className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800"
-        >
-          Create New Event
-        </Link>
-      </div>
-      {loading ? (
-        <div className="text-center text-gray-700">Loading...</div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {events.map((event) => (
-            <div
-              key={event._id}
-              className="bg-white p-4 rounded-md shadow-md hover:shadow-lg transition-shadow"
-            >
-              <h2 className="text-lg font-medium text-gray-800">{event.name}</h2>
-              <p className="text-gray-700">{event.description}</p>
-              <div className="mt-4 flex space-x-4">
-                <Link
-                  href={`/dashboard/organizer/events/${event._id}`}
-                  className="text-gray-700 hover:text-gray-900 hover:underline"
-                >
-                  View
-                </Link>
-                <Link
-                  href={`/dashboard/organizer/events/${event._id}/edit`}
-                  className="text-gray-700 hover:text-gray-900 hover:underline"
-                >
-                  Edit
-                </Link>
-                <Link
-                  href={`/dashboard/organizer/subevents?eventId=${event._id}`} // Dynamic link
-                  className="text-gray-700 hover:text-gray-900 hover:underline"
-                >
-                  Manage Sub-Events
-                </Link>
-                <button
-                  onClick={() => handleDelete(event._id)}
-                  className="text-red-600 hover:text-red-800 hover:underline"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
+    <div className="p-8 bg-gray-50 min-h-screen">
+      <div className="max-w-5xl mx-auto">
+        <h1 className="text-3xl font-bold mb-8 text-gray-800">My Events</h1>
+        <div className="flex justify-between items-center mb-8">
+          <div></div> {/* Placeholder for alignment */}
+          <Link
+            href="/dashboard/organizer/events/new"
+            className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+          >
+            Create New Event
+          </Link>
         </div>
-      )}
+        {loading ? (
+          <div className="text-center text-gray-600 text-lg">
+            <svg
+              className="animate-spin h-6 w-6 mx-auto mb-2 text-indigo-600"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8h8a8 8 0 11-16 0z"
+              />
+            </svg>
+            Loading...
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {events.map((event) => (
+              <div
+                key={event._id}
+                className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6"
+              >
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">{event.name}</h2>
+                <div className="flex justify-between text-sm text-gray-600 mb-6">
+                  <div>
+                    <p className="font-medium">Start time</p>
+                    <p>{formatDateTime(event.conductedDates.start)}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium">End time</p>
+                    <p>{formatDateTime(event.conductedDates.end)}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <Link
+                    href={`/dashboard/organizer/events/${event._id}`}
+                    className="bg-indigo-100 text-indigo-700 text-center py-2 rounded-lg font-medium hover:bg-indigo-200 transition-colors"
+                  >
+                    View
+                  </Link>
+                  <Link
+                    href={`/dashboard/organizer/events/${event._id}/edit`}
+                    className="bg-indigo-100 text-indigo-700 text-center py-2 rounded-lg font-medium hover:bg-indigo-200 transition-colors"
+                  >
+                    Edit
+                  </Link>
+                  <Link
+                    href={`/dashboard/organizer/subevents?eventId=${event._id}`}
+                    className="bg-indigo-100 text-indigo-700 text-center py-2 rounded-lg font-medium hover:bg-indigo-200 transition-colors"
+                  >
+                    Manage Events
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(event._id)}
+                    className="bg-red-100 text-red-700 text-center py-2 rounded-lg font-medium hover:bg-red-200 transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
