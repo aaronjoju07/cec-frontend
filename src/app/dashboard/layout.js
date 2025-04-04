@@ -34,7 +34,7 @@ export default function StudentLayout({ children }) {
       <Sidebar user={auth.user} />
       <div className="flex flex-col flex-1 overflow-hidden">
         <Navbar user={auth.user} />
-        <main className="flex-1 overflow-y-auto bg-white p-4 md:p-6 text-gray-800">
+        <main className="flex-1 overflow-y-auto bg-white p-4 md:p-1 text-gray-800">
           {children}
         </main>
       </div>

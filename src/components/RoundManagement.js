@@ -1,4 +1,3 @@
-// components/RoundManagement.js
 'use client';
 import { useState } from 'react';
 import axios from 'axios';
@@ -6,6 +5,8 @@ import axios from 'axios';
 export default function RoundManagement({ eventId, subEventId, onRoundAdded }) {
   const [name, setName] = useState('');
   const [categories, setCategories] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
@@ -19,11 +20,14 @@ export default function RoundManagement({ eventId, subEventId, onRoundAdded }) {
           subEventId,
           name,
           scoringCategories: categories.split(',').map((cat) => cat.trim()).filter(Boolean),
+          timeSlot: { start: startTime, end: endTime }, // Add timeSlot
         },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );
       setName('');
       setCategories('');
+      setStartTime('');
+      setEndTime('');
       onRoundAdded();
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to add round.');
@@ -51,6 +55,26 @@ export default function RoundManagement({ eventId, subEventId, onRoundAdded }) {
           onChange={(e) => setCategories(e.target.value)}
           placeholder="e.g., Technical, Presentation, Creativity"
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Start Time</label>
+        <input
+          type="datetime-local"
+          value={startTime}
+          onChange={(e) => setStartTime(e.target.value)}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700">End Time</label>
+        <input
+          type="datetime-local"
+          value={endTime}
+          onChange={(e) => setEndTime(e.target.value)}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-black"
+          required
         />
       </div>
       {error && <p className="text-red-600 text-sm">{error}</p>}

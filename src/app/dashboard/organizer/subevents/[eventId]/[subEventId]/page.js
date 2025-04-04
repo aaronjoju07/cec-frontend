@@ -1,4 +1,3 @@
-// app/dashboard/organizer/subevents/[eventId]/[subEventId]/page.js
 'use client';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
@@ -11,11 +10,13 @@ export default function SubEventDetailPage() {
   const { eventId, subEventId } = useParams();
   const [subEvent, setSubEvent] = useState(null);
   const [participants, setParticipants] = useState([]);
+  const [schedules, setSchedules] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
     fetchSubEvent();
+    fetchSchedules();
   }, [eventId, subEventId]);
 
   const fetchSubEvent = async () => {
@@ -30,12 +31,25 @@ export default function SubEventDetailPage() {
       setSubEvent(subEventData);
       setParticipants(event.registeredStudents.map((student) => ({
         _id: student._id,
-        name: student.username, // Adjust based on your User schema
+        name: student.username,
       })));
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to fetch sub-event details.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchSchedules = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/scheduling/schedule`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        params: { eventId },
+      });
+      const subEventSchedule = response.data.schedules.find((s) => s.subEventId === subEventId);
+      setSchedules(subEventSchedule?.rounds || []);
+    } catch (err) {
+      console.error('Failed to fetch schedules:', err);
     }
   };
 
@@ -58,8 +72,26 @@ export default function SubEventDetailPage() {
             <RoundManagement
               eventId={eventId}
               subEventId={subEventId}
-              onRoundAdded={fetchSubEvent}
+              onRoundAdded={() => {
+                fetchSubEvent();
+                fetchSchedules();
+              }}
             />
+          </section>
+          <section className="bg-white p-6 rounded-md shadow-md">
+            <h2 className="text-xl font-medium text-gray-800 mb-4">Round Schedules</h2>
+            {schedules.length === 0 ? (
+              <p className="text-gray-700">No schedules assigned yet.</p>
+            ) : (
+              <ul className="space-y-2">
+                {schedules.map((schedule) => (
+                  <li key={schedule.roundId} className="text-gray-700">
+                    {schedule.name}: {new Date(schedule.timeSlot.start).toLocaleString()} -{' '}
+                    {new Date(schedule.timeSlot.end).toLocaleString()} @ {schedule.venue}
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
           <section className="bg-white p-6 rounded-md shadow-md">
             <h2 className="text-xl font-medium text-gray-800 mb-4">Submit Scores</h2>

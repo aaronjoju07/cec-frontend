@@ -9,26 +9,11 @@ export default function Chatbot() {
   const [loading, setLoading] = useState(false);
   const [registeredEvents, setRegisteredEvents] = useState([]);
 
-  // Fetch registered events (example: from an API endpoint)
-  // useEffect(() => {
-  //   const fetchRegisteredEvents = async () => {
-  //     try {
-  //       const res =   await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/student/registered-events`, {
-  //         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-  //       });
-  //       setRegisteredEvents(res.data.events.map(event => event.name));  // Adjust based on your API response
-  //     } catch (error) {
-  //       console.error('Error fetching registered events:', error);
-  //     }
-  //   };
-  //   fetchRegisteredEvents();
-  // }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:5001/chat', {
+      const res = await axios.post('http://localhost:5002/chat', {
         question,
         registered_events: registeredEvents
       }, {

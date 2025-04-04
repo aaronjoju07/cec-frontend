@@ -26,7 +26,6 @@ export default function Sidebar() {
         { name: 'My Events', href: '/dashboard/organizer/events', icon: CalendarIcon },
         { name: 'Create Event', href: '/dashboard/organizer/events/new', icon: InboxIcon },
         { name: 'Analytics', href: '/dashboard/organizer/analytics', icon: ChartBarIcon },
-        { name: 'Scheduling', href: '/dashboard/organizer/scheduling', icon: ClockIcon },
         { name: 'Score Management', href: '/dashboard/organizer/subevents', icon: TrophyIcon },
       ]
     : [

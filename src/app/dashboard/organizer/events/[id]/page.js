@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
+import Link from 'next/link';
 
 export default function EventDetailPage() {
   const [event, setEvent] = useState(null);

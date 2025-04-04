@@ -1,4 +1,4 @@
-// app/dashboard/events/[id]/page.js
+// app/dashboard/events/[id]/view/page.js
 'use client';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
@@ -33,13 +33,13 @@ export default function EventDetailPage() {
     }
 
     try {
-      // Fetch event details
+      // Fetch event details including rounds and times
       const eventRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/events/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setEvent(eventRes.data);
 
-      // Fetch scores only if student is registered
+      // Check if the student is registered and fetch their scores
       const isRegistered = eventRes.data.registeredStudents.some((student) => student._id === user?._id);
       if (isRegistered) {
         try {
@@ -50,11 +50,11 @@ export default function EventDetailPage() {
           setScores(scoresRes.data);
         } catch (scoreError) {
           console.error('Scores fetch error:', scoreError.response?.data || scoreError.message);
-          setScores([]); // Default to empty scores if fetch fails
+          setScores([]); // Default to empty array if scores fetch fails
           setError('Failed to load your scores. Event details are still available.');
         }
       } else {
-        setScores([]); // No scores if not registered
+        setScores([]); // No scores if student isn't registered
       }
     } catch (eventError) {
       console.error('Event fetch error:', eventError.response?.data || eventError.message);
@@ -80,7 +80,7 @@ export default function EventDetailPage() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert('Successfully registered!');
-      fetchEventAndScores();
+      fetchEventAndScores(); // Refresh data after registration
     } catch (error) {
       console.error('Registration error:', error.response?.data || error.message);
       alert(error.response?.data?.message || 'Registration failed. Please try again.');
@@ -120,7 +120,6 @@ export default function EventDetailPage() {
       )}
 
       <div className="space-y-8">
-        {/* Event Overview */}
         <section className="bg-white p-6 rounded-md shadow-md border border-gray-200">
           <h2 className="text-xl font-medium text-gray-800 mb-4">Overview</h2>
           <p className="text-gray-700">{event.description}</p>
@@ -143,7 +142,7 @@ export default function EventDetailPage() {
           </div>
           {isStudent && (
             <button
-              onClick={handleRegister}
+              onClick={!isRegistered ? handleRegister : undefined} // Only trigger onClick if not registered
               disabled={isRegistered || event.registeredStudents.length >= event.maximumStudents}
               className={`mt-4 px-4 py-2 rounded-md text-white ${
                 isRegistered || event.registeredStudents.length >= event.maximumStudents
@@ -152,88 +151,15 @@ export default function EventDetailPage() {
               }`}
             >
               {isRegistered
-                ? 'Already Registered'
+                ? 'Registered' // Changed from 'Already Registered' to 'Registered'
                 : event.registeredStudents.length >= event.maximumStudents
                 ? 'Event Full'
                 : 'Register Now'}
             </button>
           )}
         </section>
-
-        {/* Organizing Details */}
         <section className="bg-white p-6 rounded-md shadow-md border border-gray-200">
-          <h2 className="text-xl font-medium text-gray-800 mb-4">Organizing Details</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <p className="text-gray-700">
-              <strong>Institution:</strong> {event.organizingInstitution || 'Not specified'}
-            </p>
-            <p className="text-gray-700">
-              <strong>College:</strong> {event.organizingCollege || 'Not specified'}
-            </p>
-          </div>
-        </section>
-
-        {/* Targeted Audience */}
-        <section className="bg-white p-6 rounded-md shadow-md border border-gray-200">
-          <h2 className="text-xl font-medium text-gray-800 mb-4">Targeted Audience</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <p className="text-gray-700 font-medium">Departments:</p>
-              {event.targetedAudience?.departments?.length > 0 ? (
-                <ul className="mt-2 space-y-1">
-                  {event.targetedAudience.departments.map((dept, index) => (
-                    <li key={index} className="text-gray-700">{dept}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-gray-600">None specified</p>
-              )}
-            </div>
-            <div>
-              <p className="text-gray-700 font-medium">Courses:</p>
-              {event.targetedAudience?.courses?.length > 0 ? (
-                <ul className="mt-2 space-y-1">
-                  {event.targetedAudience.courses.map((course, index) => (
-                    <li key={index} className="text-gray-700">{course}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-gray-600">None specified</p>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* General Rules */}
-        <section className="bg-white p-6 rounded-md shadow-md border border-gray-200">
-          <h2 className="text-xl font-medium text-gray-800 mb-4">General Rules</h2>
-          {event.generalRules?.length > 0 ? (
-            <ul className="list-disc list-inside space-y-2 text-gray-700">
-              {event.generalRules.map((rule, index) => (
-                <li key={index}>{rule}</li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-600">No rules specified</p>
-          )}
-        </section>
-
-        {/* Contact Information */}
-        <section className="bg-white p-6 rounded-md shadow-md border border-gray-200">
-          <h2 className="text-xl font-medium text-gray-800 mb-4">Contact Information</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <p className="text-gray-700">
-              <strong>Email:</strong> {event.contactInfo?.email || 'Not specified'}
-            </p>
-            <p className="text-gray-700">
-              <strong>Phone:</strong> {event.contactInfo?.phone || 'Not specified'}
-            </p>
-          </div>
-        </section>
-
-        {/* Sub-Events */}
-        <section className="bg-white p-6 rounded-md shadow-md border border-gray-200">
-          <h2 className="text-xl font-medium text-gray-800 mb-4">Sub-Events</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Event Schedules</h2>
           {event.subEvents?.length > 0 ? (
             <div className="space-y-4">
               {event.subEvents.map((subEvent) => (
@@ -243,18 +169,9 @@ export default function EventDetailPage() {
                   <p className="text-gray-700 mt-1">
                     <strong>Venue:</strong> {subEvent.venue || 'Not specified'}
                   </p>
-                  {subEvent.prizePools?.length > 0 && (
-                    <div className="mt-2">
-                      <p className="text-gray-700 font-medium">Prize Pools:</p>
-                      <ul className="mt-1 space-y-1">
-                        {subEvent.prizePools.map((prize, index) => (
-                          <li key={index} className="text-gray-700">
-                            Rank {prize.rank}: ${prize.amount}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  <p className="text-gray-700 mt-1">
+                    <strong>Time:</strong> {subEvent.time ? new Date(subEvent.time).toLocaleString() : 'Not specified'}
+                  </p>
                 </div>
               ))}
             </div>
@@ -263,7 +180,6 @@ export default function EventDetailPage() {
           )}
         </section>
 
-        {/* My Scores */}
         {isRegistered && (
           <section className="bg-white p-6 rounded-md shadow-md border border-gray-200">
             <h2 className="text-xl font-medium text-gray-800 mb-4">My Scores</h2>
