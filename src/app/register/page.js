@@ -95,7 +95,7 @@ export default function RegisterPage() {
         )}
         
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm space-y-4">
+          <div className="rounded-md shadow-sm space-y-4 m-6 p-4">
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
               <input
@@ -149,7 +149,7 @@ export default function RegisterPage() {
                 id="role"
                 name="role"
                 required
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base text-black border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                 value={formData.role}
                 onChange={handleChange}
               >
@@ -164,7 +164,7 @@ export default function RegisterPage() {
                 id="department"
                 name="department"
                 required
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base text-black border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                 value={formData.department}
                 onChange={handleChange}
               >
@@ -181,7 +181,7 @@ export default function RegisterPage() {
                 id="course"
                 name="course"
                 required
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base text-black border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                 value={formData.course}
                 onChange={handleChange}
                 disabled={!formData.department}
